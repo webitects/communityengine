@@ -25,16 +25,15 @@ class User < ActiveRecord::Base
 
 
   #validation
-  validates_presence_of     :login, :email
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 6..20, :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
   validates_presence_of     :metro_area,                 :if => Proc.new { |user| user.state }
-  validates_length_of       :login,    :within => 5..20
-  validates_length_of       :email,    :within => 3..100
-  validates_format_of       :email, :with => /^([^@\s]+)@((?:[-a-z0-9A-Z]+\.)+[a-zA-Z]{2,})$/
-  validates_format_of       :login, :with => /^[\sA-Za-z0-9_-]+$/
+  validates_length_of       :login,    :within => 5..20, :allow_nil => true
+  validates_length_of       :email,    :within => 3..100, :allow_nil => true
+  validates_format_of       :email, :with => /^([^@\s]+)@((?:[-a-z0-9A-Z]+\.)+[a-zA-Z]{2,})$/, :allow_nil => true
+  validates_format_of       :login, :with => /^[\sA-Za-z0-9_-]+$/, :allow_nil => true
   validates_uniqueness_of   :login, :email, :case_sensitive => false
   validates_uniqueness_of   :login_slug
   validates_exclusion_of    :login, :in => AppConfig.reserved_logins
@@ -352,7 +351,7 @@ class User < ActiveRecord::Base
   
   # before filter
   def generate_login_slug
-    self.login_slug = self.login.gsub(/[^a-z0-9]+/i, '-')
+    self.login_slug = self.login.gsub(/[^a-z0-9]+/i, '-') if self.login
   end
   
   def deliver_activation
@@ -472,7 +471,7 @@ class User < ActiveRecord::Base
     end
 
     def whitelist_attributes
-      self.login = self.login.strip
+      self.login = self.login.strip if self.login
       self.description = white_list(self.description )
       self.stylesheet = white_list(self.stylesheet )
     end
