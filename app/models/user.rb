@@ -34,8 +34,8 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100, :allow_nil => true
   validates_format_of       :email, :with => /^([^@\s]+)@((?:[-a-z0-9A-Z]+\.)+[a-zA-Z]{2,})$/, :allow_nil => true
   validates_format_of       :login, :with => /^[\sA-Za-z0-9_-]+$/, :allow_nil => true
-  validates_uniqueness_of   :login, :email, :case_sensitive => false
-  validates_uniqueness_of   :login_slug
+  validates_uniqueness_of   :login, :email, :case_sensitive => false, :allow_nil => true
+  validates_uniqueness_of   :login_slug, :allow_nil => true
   validates_exclusion_of    :login, :in => AppConfig.reserved_logins
   validates_date :birthday, :before => 13.years.ago.to_date  
 
