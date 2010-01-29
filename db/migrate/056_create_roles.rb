@@ -1,21 +1,22 @@
 class CreateRoles < ActiveRecord::Migration
+  class User < ActiveRecord::Base; end
+  class Role < ActiveRecord::Base; end
+
   def self.up
     create_table :roles do |t|
       t.column :name, :string
     end
 
-    Role.enumeration_model_updates_permitted = true
-    Role.create(:name => 'admin')    
-    Role.create(:name => 'moderator')
-    Role.create(:name => 'member')            
-    Role.enumeration_model_updates_permitted = false
+    admin_role = Role.create(:name => 'admin')    
+    moderator_role = Role.create(:name => 'moderator')
+    member_role = Role.create(:name => 'member')            
     
     add_column :users, :role_id, :integer
 
     #set all existing users to 'member'
-    User.update_all("role_id = #{Role[:member].id}", ["admin = ?", false])
+    User.update_all("role_id = #{member_role.id}", ["admin = ?", false])
     #set admins to 'admin'
-    User.update_all("role_id = #{Role[:admin].id}", ["admin = ?", true])    
+    User.update_all("role_id = #{admin_role.id}", ["admin = ?", true])    
 
     remove_column :users, :admin
   end

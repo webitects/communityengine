@@ -4,6 +4,8 @@ end
 
 
 class CreatePages < ActiveRecord::Migration
+  class Page < ActiveRecord::Base; end
+
   def self.up    
     create_table :pages do |t|
       t.string :title

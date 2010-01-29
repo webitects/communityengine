@@ -1,4 +1,6 @@
 class AddPublishedAtToPosts < ActiveRecord::Migration
+  class Post < ActiveRecord::Base; end
+
   def self.up
     add_column :posts, :published_at, :datetime
 

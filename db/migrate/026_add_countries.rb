@@ -1,4 +1,6 @@
 class AddCountries < ActiveRecord::Migration
+  class Country < ActiveRecord::Base; end
+
   def self.up
     ["Abuja",
     "Afghanistan",

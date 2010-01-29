@@ -1,4 +1,6 @@
 class AddPublishedAsToPosts < ActiveRecord::Migration
+  class Post < ActiveRecord::Base; end
+
   def self.up
     add_column :posts, :published_as, :string, :limit => 16, :default => 'draft'
 

@@ -1,6 +1,6 @@
 class AddUsToUsersWithStates < ActiveRecord::Migration
-  class User < ActiveRecord::Base
-  end
+  class User < ActiveRecord::Base; end
+  class Country < ActiveRecord::Base; end
   
   def self.up
     User.find(:all, :conditions => 'state_id is not null').each do |u|

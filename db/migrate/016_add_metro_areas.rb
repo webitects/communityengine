@@ -1,4 +1,7 @@
 class AddMetroAreas < ActiveRecord::Migration
+  class State < ActiveRecord::Base; end
+  class MetroArea < ActiveRecord::Base; end
+
   def self.up
     failed = []
     ["Abilene, TX",
@@ -280,7 +283,7 @@ class AddMetroAreas < ActiveRecord::Migration
 
       next if state.nil?
       
-      ma = MetroArea.new(:name => a[0], :state => state, :country_id => 0)
+      ma = MetroArea.new(:name => a[0], :state_id => state.id, :country_id => 0)
       ma.save
     end
     if failed.size > 0
